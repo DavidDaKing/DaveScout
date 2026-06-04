@@ -2,7 +2,7 @@
 
 """
 Goals:
-    - Create python code that uses nmap functionality
+    - Create python code that uses nmap functionality -- check 6/4/26
     - Create python code that uses ARP requests
 """
 
@@ -30,6 +30,7 @@ def initFunc():
 
 
 # Easy way complete
+
 
 if __name__ == "__main__":
     banner = r"""
