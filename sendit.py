@@ -9,8 +9,8 @@ Goals:
 """
 
 import socket
-import threading
 import time
+from concurrent.futures import ThreadPoolExecutor
 
 import nmap
 
@@ -36,39 +36,25 @@ def initFunc():
 
 # ARP HOST DISCOVERY FUNCTION
 
-
-def scan_single_port(givenTarget, port):
+def scan_single_port(givenTarget, port, timeout=0.5):
     try:
-        # This is the standard IPv4 TCP stream socket
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as sock:
-            # sock.settimeout(1.0)
-            # target being the global variable
-            # port being an argument.
-            result = sock.connect_ex((givenTarget, port))
-            if result == 0:
-                print(f"    [!] Port {port} is OPEN!")
+            sock.settimeout(timeout)
+            return sock.connect_ex((givenTarget, port)) == 0
     except Exception:
-        pass
+        return False
 
 
-def port_scanner_loop(givenTarget):
-    # Scan port from 1-65535
+def port_scanner_loop(givenTarget, max_ports=65535, workers=200, timeout=0.5):
+    print(f"Scanning {givenTarget} on ports 1-{max_ports} with {workers} workers and {timeout}s timeout")
 
-    MAX_PORTS = 65535
+    with ThreadPoolExecutor(max_workers=workers) as executor:
+        futures = {executor.submit(scan_single_port, givenTarget, port, timeout): port for port in range(1, max_ports + 1)}
 
-    threads = []
-
-    for port in range(1, MAX_PORTS):
-        print(port)
-        thread = threading.Thread(
-            target=scan_single_port, args=(givenTarget, str(port))
-        )
-        threads.append(thread)
-        thread.start()
-
-    # synchronize threads
-    for thread in threads:
-        thread.join()
+        for future in futures:
+            port = futures[future]
+            if future.result():
+                print(f"    [!] Port {port} is OPEN!")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,10 @@
+[project]
+name = "davescout"
+version = "0.0.1"
+description = "binary written in python to automate enumeration"
+readme = "README.md"
+
+[project.scripts]
+davescout = "davescout.__main__:main"
+
+
