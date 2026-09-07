@@ -7,12 +7,12 @@ Port scanner:
     - Protocol analysis
 
 
-  FFUF Fuzzer: 
-    - Fuzzing for directories
-    - Fuzzing for files and extensions
-    - Identifying hidden vhosts
-    - Fuzzing for PHP parameters
-    - Fuzzing for parameter values 
+FFUF Fuzzer: 
+  - Fuzzing for directories
+  - Fuzzing for files and extensions
+  - Identifying hidden vhosts
+  - Fuzzing for PHP parameters
+  - Fuzzing for parameter values 
 
 
 
