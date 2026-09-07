@@ -13,7 +13,7 @@ def scan_port(host, port, timeout=0.5):
         with socket(AF_INET, SOCK_STREAM) as s:
             s.settimeout(timeout)
             return s.connect_ex((host, port)) == 0
-    except Exception:
+    except OSError as e:  # Do not catch a blind exception
         return False
 
 # Host, ports should be passed in from the main function.
